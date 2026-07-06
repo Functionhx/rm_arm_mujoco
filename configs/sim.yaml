@@ -1,0 +1,19 @@
+# 仿真参数、相机参数、控制频率
+scene: assets/scenes/pick_place_scene.xml
+
+sim:
+  control_hz: 100          # 控制频率 (Hz)
+  settle_steps: 300        # 复位后静置步数
+  gravity: [0, 0, -9.81]
+
+camera:
+  name: topdown_cam        # 主感知 RGB-D 相机（眼在手外，俯视工作区，xy 定位视差小）
+  width: 640
+  height: 480
+  # fovy 从 MJCF 中读取；此处仅记录，实际以模型为准
+
+render:
+  width: 800
+  height: 600
+  video_camera: video_cam  # 录像用相机
+  fps: 30

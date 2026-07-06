@@ -1,0 +1,36 @@
+<mujoco model="energy_unit">
+  <!--
+    能量单元 (RoboMaster 2026 工程挑战赛)
+    依规则手册 5.2.2 节：总高 150 mm，顶端 Ø95 mm，底端 Ø80 mm，双端不对称，质量约 0.45 kg。
+    真实能量单元为"哑铃/线轴"形：两端为大直径端盖，中间为细腰（规则图中约 5 mm 的连接段），
+    细腰即为夹爪的可夹持部位。此处按该几何建模：底端盖 + 细腰(可夹持) + 顶端盖。
+    仿真代理说明：为匹配 Panda 夹爪 80 mm 行程，顶端盖直径由 Ø95 缩为 Ø60（便于夹爪自上而下
+    环过顶盖夹持细腰），其余保持哑铃拓扑与总高 150 mm 不变；这不影响对视觉引导取放算法的验证。
+    整体着鲜红色，便于颜色分割视觉检测。
+  -->
+  <asset>
+    <material name="energy_red" rgba="0.85 0.12 0.12 1" specular="0.3" shininess="0.3"/>
+    <material name="energy_dark" rgba="0.5 0.08 0.08 1"/>
+  </asset>
+
+  <worldbody>
+    <body name="energy_unit" pos="0.48 0.02 0.4005">
+      <freejoint name="energy_unit_free"/>
+      <inertial pos="0 0 0.07" mass="0.45" diaginertia="0.0009 0.0009 0.00035"/>
+      <!-- 底端盖：Ø80 (r0.040)，z ∈ [0, 0.025] -->
+      <geom name="eu_bottom" type="cylinder" material="energy_red"
+            pos="0 0 0.0125" size="0.040 0.0125"
+            friction="1.2 0.02 0.001" condim="6" solref="0.004 1" solimp="0.95 0.99 0.001"/>
+      <!-- 细腰（可夹持段，仿真代理 Ø30, r0.015）：z ∈ [0.025, 0.115]，供夹爪自上而下环入夹持 -->
+      <geom name="eu_waist" type="cylinder" material="energy_dark"
+            pos="0 0 0.070 " size="0.015 0.045"
+            friction="1.8 0.05 0.001" condim="6" solref="0.004 1" solimp="0.97 0.99 0.001"/>
+      <!-- 顶端盖（仅视觉，不参与碰撞，避免遮挡自上而下的夹持路径）Ø50 -->
+      <geom name="eu_top" type="cylinder" material="energy_red"
+            pos="0 0 0.1325" size="0.025 0.0175" contype="0" conaffinity="0"/>
+      <!-- 顶部旋转轴参考标记（深色小块） -->
+      <geom name="eu_mark" type="box" pos="0 0 0.151" size="0.015 0.004 0.002"
+            rgba="0.1 0.1 0.1 1" contype="0" conaffinity="0"/>
+    </body>
+  </worldbody>
+</mujoco>

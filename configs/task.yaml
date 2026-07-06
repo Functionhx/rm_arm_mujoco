@@ -1,0 +1,27 @@
+# 抓取物体、放置区域、状态机参数
+task:
+  object_body: energy_unit      # 待抓取目标（能量单元）
+  place_body: tray              # 放置区（简化科技核心受体）
+
+vision:
+  # 能量单元红色的 HSV 阈值（OpenCV: H 0-179, S/V 0-255），红色跨 0 度需两段
+  hsv_lower1: [0, 120, 60]
+  hsv_upper1: [10, 255, 255]
+  hsv_lower2: [160, 120, 60]
+  hsv_upper2: [179, 255, 255]
+  min_area: 200                 # 最小连通域面积（像素）
+
+grasp:
+  approach_height: 0.16         # 预抓取相对抓取点的高度 (m)
+  grasp_z_offset: 0.07          # 抓取点相对物体底部的高度 (m)（夹在细腰段）
+  lift_height: 0.20             # 抬升高度 (m)
+
+place:
+  above_height: 0.18            # 放置目标上方接近高度 (m)
+  insert_depth: 0.10            # 放置时 TCP 相对放置区底座的高度 (m)，物体降入内腔后再松开
+
+state_machine:
+  pos_tol: 0.012                # 到位判据（末端位置误差, m）
+  settle_steps: 40              # 各阶段稳定步数
+  max_detect_retries: 5
+  timeout_s: 40                 # 单次任务超时 (s)

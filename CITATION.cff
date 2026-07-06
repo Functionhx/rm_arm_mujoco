@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "rm_arm_mujoco: Vision-Guided Robotic Arm Pick-and-Place in MuJoCo"
+authors:
+  - family-names: "Fan"
+    given-names: "Yuchen"
+    alias: "樊宇琛"
+version: 0.1.0
+date-released: "2026-07-06"
+license: MIT
+keywords:
+  - robotic manipulation
+  - machine vision
+  - visual servoing
+  - inverse kinematics
+  - MuJoCo
+  - RoboMaster
+abstract: >
+  A simulation-first implementation of a vision-guided robotic-arm pick-and-place
+  system in the MuJoCo physics engine, targeting the RoboMaster 2026 University
+  League Engineering Challenge. It integrates RGB-D color-segmentation object
+  detection and pose estimation, hand-eye coordinate transforms, damped
+  least-squares Jacobian inverse kinematics, quintic-polynomial trajectory
+  planning, and a finite-state-machine task controller.

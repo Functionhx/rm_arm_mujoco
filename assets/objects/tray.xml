@@ -1,0 +1,26 @@
+<mujoco model="tray">
+  <!--
+    放置区 / 简化科技核心受体 (placement target)
+    一个浅口方盒，能量单元竖直放入其内腔完成"装配"。
+    着蓝绿色以区别于红色能量单元，便于视觉区分。
+  -->
+  <asset>
+    <material name="tray_teal" rgba="0.15 0.5 0.55 1" specular="0.2" shininess="0.2"/>
+    <material name="tray_slot" rgba="0.08 0.3 0.34 1"/>
+  </asset>
+
+  <worldbody>
+    <body name="tray" pos="0.5 -0.32 0.40">
+      <!-- 底板 -->
+      <geom name="tray_base" type="box" pos="0 0 0.006" size="0.085 0.085 0.006"
+            material="tray_teal" friction="1.0 0.02 0.001" condim="4"/>
+      <!-- 四壁，围出内腔 (内半径约 0.077)，壁高 0.06 -->
+      <geom name="tray_wx1" type="box" pos="0.079 0 0.036" size="0.006 0.085 0.036" material="tray_teal"/>
+      <geom name="tray_wx2" type="box" pos="-0.079 0 0.036" size="0.006 0.085 0.036" material="tray_teal"/>
+      <geom name="tray_wy1" type="box" pos="0 0.079 0.036" size="0.085 0.006 0.036" material="tray_teal"/>
+      <geom name="tray_wy2" type="box" pos="0 -0.079 0.036" size="0.085 0.006 0.036" material="tray_teal"/>
+      <!-- 内腔中心标记点（供放置目标位姿参考） -->
+      <site name="tray_center" pos="0 0 0.012" size="0.01" rgba="0.9 0.9 0.2 0.5" group="4"/>
+    </body>
+  </worldbody>
+</mujoco>

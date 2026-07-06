@@ -1,0 +1,25 @@
+# 机械臂关节名、夹爪参数、初始位姿
+robot:
+  name: panda
+  arm_joints: [joint1, joint2, joint3, joint4, joint5, joint6, joint7]
+  arm_actuators: [actuator1, actuator2, actuator3, actuator4, actuator5, actuator6, actuator7]
+  ee_site: grasp_site       # 末端执行器 (TCP) 参考站点
+  base_body: link0
+
+  # home / ready 位姿（弧度），使末端位于工作区上方、远离物体
+  home_qpos: [0.0, -0.5, 0.0, -2.0, 0.0, 1.5, 0.785]
+
+gripper:
+  actuator: actuator8       # 腱驱夹爪执行器
+  ctrl_open: 255.0          # 张开指令
+  ctrl_close: 0.0           # 闭合指令
+  finger_joints: [finger_joint1, finger_joint2]
+  width_open: 0.08          # 张开指间距 (m)
+  grasp_force_threshold: 5.0
+
+ik:
+  max_iters: 100
+  tol_pos: 0.002            # 位置收敛阈值 (m)
+  tol_rot: 0.02             # 姿态收敛阈值 (rad)
+  damping: 0.08             # 阻尼最小二乘系数 lambda
+  step_scale: 1.0

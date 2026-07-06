@@ -1,0 +1,57 @@
+<mujoco model="pick_place_scene">
+  <!--
+    RoboMaster 2026 工程挑战赛 取放任务 仿真场景
+    组成：Franka Panda 机械臂 (MuJoCo Menagerie) + 工作台 + 能量单元 + 放置区 + RGB-D 相机
+    注：include 顺序在前，随后的 <compiler> 覆盖 meshdir 使其相对本场景目录正确指向 panda 网格。
+  -->
+  <include file="../robots/panda/panda.xml"/>
+  <compiler angle="radian" meshdir="../robots/panda/assets" autolimits="true"/>
+
+  <statistic center="0.4 -0.1 0.4" extent="1.2"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.35 0.35 0.35" specular="0.1 0.1 0.1"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="140" elevation="-22" offwidth="1280" offheight="960"/>
+    <quality shadowsize="4096"/>
+    <!-- 收紧深度裁剪范围以提升 RGB-D 深度精度（改善像素反投影位姿估计） -->
+    <map znear="0.05" zfar="2.2"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.35 0.55 0.75" rgb2="0.05 0.08 0.12" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.25 0.32 0.4" rgb2="0.15 0.2 0.28"
+      markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.15"/>
+    <material name="table_wood" rgba="0.72 0.6 0.42 1" specular="0.15" shininess="0.2"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0.4 0.2 2.0" dir="0 0 -1" directional="true" diffuse="0.5 0.5 0.5"/>
+    <light pos="0.4 -0.6 1.6" dir="0 0.4 -1" diffuse="0.35 0.35 0.35"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+
+    <!-- 工作台：台面高 0.40 m -->
+    <body name="table" pos="0.5 -0.1 0.20">
+      <geom name="table_top" type="box" size="0.32 0.42 0.20" material="table_wood"
+            friction="1.0 0.02 0.001" condim="4"/>
+    </body>
+
+    <!-- 固定 RGB-D 相机（眼在手外，主感知相机），俯视工作区 -->
+    <camera name="scene_cam" pos="0.5 0.75 1.05" mode="targetbody" target="table" fovy="50"/>
+    <!-- 近似俯视相机，用于位姿真值对照 -->
+    <camera name="topdown_cam" pos="0.5 -0.1 1.35" mode="targetbody" target="table" fovy="52"/>
+    <!-- 演示/录像用相机（斜前方，画面更立体） -->
+    <camera name="video_cam" pos="1.15 0.85 0.95" mode="targetbody" target="table" fovy="45"/>
+  </worldbody>
+
+  <include file="../objects/cube.xml"/>
+  <include file="../objects/tray.xml"/>
+
+  <!-- 抓取焊接约束：夹爪闭合且物体在指间时激活，等效牢固夹持；松开时解除。
+       relpose 在激活瞬间由代码按当前相对位姿写入。 -->
+  <equality>
+    <weld name="grasp_weld" body1="hand" body2="energy_unit" active="false"
+          solref="0.02 1" solimp="0.9 0.95 0.001"/>
+  </equality>
+</mujoco>

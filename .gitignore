@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# uv / venv
+.venv/
+
+# 运行时产物（可由脚本重新生成；showcase 素材保存在 docs/media/）
+# 保留目录结构（.gitkeep），忽略其中的产物文件
+outputs/*/*
+!outputs/*/.gitkeep
+
+# OS
+.DS_Store
+
+# MuJoCo runtime log
+MUJOCO_LOG.TXT

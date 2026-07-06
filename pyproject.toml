@@ -1,0 +1,32 @@
+[project]
+name = "rm-arm-mujoco"
+version = "0.1.0"
+description = "视觉引导机械臂自动取放系统（MuJoCo 仿真）— 面向 RoboMaster 2026 工程挑战赛"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mujoco>=3.1.0",
+    "numpy>=1.24",
+    "opencv-python>=4.8",
+    "scipy>=1.10",
+    "pyyaml>=6.0",
+    "imageio>=2.31",
+    "imageio-ffmpeg>=0.4.9",
+    "matplotlib>=3.7",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
